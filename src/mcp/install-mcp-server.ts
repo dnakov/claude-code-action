@@ -63,7 +63,7 @@ export async function prepareMcpConfig(
         ],
         env: {
           // Use workflow github token, not app token
-          GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+          GITHUB_TOKEN: process.env.ACTIONS_TOKEN,
           REPO_OWNER: owner,
           REPO_NAME: repo,
           PR_NUMBER: context.entityNumber.toString(),
