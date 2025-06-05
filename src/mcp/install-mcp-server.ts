@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import type { ParsedGitHubContext } from "../github/context";
 
 type PrepareConfigParams = {
   githubToken: string;
@@ -8,6 +9,7 @@ type PrepareConfigParams = {
   additionalMcpConfig?: string;
   claudeCommentId?: string;
   allowedTools: string[];
+  context: ParsedGitHubContext;
 };
 
 export async function prepareMcpConfig(
@@ -21,6 +23,7 @@ export async function prepareMcpConfig(
     additionalMcpConfig,
     claudeCommentId,
     allowedTools,
+    context,
   } = params;
   try {
     const allowedToolsList = allowedTools || [];
@@ -50,6 +53,23 @@ export async function prepareMcpConfig(
         },
       },
     };
+
+    if (context.isPR) {
+      baseMcpConfig.mcpServers.github_ci = {
+        command: "bun",
+        args: [
+          "run",
+          `${process.env.GITHUB_ACTION_PATH}/src/mcp/github-actions-server.ts`,
+        ],
+        env: {
+          // Use workflow github token, not app token
+          GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+          REPO_OWNER: owner,
+          REPO_NAME: repo,
+          PR_NUMBER: context.entityNumber.toString(),
+        },
+      };
+    }
 
     if (hasGitHubMcpTools) {
       baseMcpConfig.mcpServers.github = {
