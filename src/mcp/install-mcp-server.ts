@@ -67,6 +67,7 @@ export async function prepareMcpConfig(
           REPO_OWNER: owner,
           REPO_NAME: repo,
           PR_NUMBER: context.entityNumber.toString(),
+          TEST_TEST_: "test",
         },
       };
     }
