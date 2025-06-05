@@ -466,8 +466,8 @@ describe("prepareMcpConfig", () => {
   });
 
   test("should include github_ci server when context.isPR is true", async () => {
-    const oldEnv = process.env.GITHUB_TOKEN;
-    process.env.GITHUB_TOKEN = "workflow-token";
+    const oldEnv = process.env.ACTIONS_TOKEN;
+    process.env.ACTIONS_TOKEN = "workflow-token";
 
     const result = await prepareMcpConfig({
       githubToken: "test-token",
@@ -484,7 +484,7 @@ describe("prepareMcpConfig", () => {
     expect(parsed.mcpServers.github_ci.env.PR_NUMBER).toBe("456");
     expect(parsed.mcpServers.github_file_ops).toBeDefined();
 
-    process.env.GITHUB_TOKEN = oldEnv;
+    process.env.ACTIONS_TOKEN = oldEnv;
   });
 
   test("should not include github_ci server when context.isPR is false", async () => {
