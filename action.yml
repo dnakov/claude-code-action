@@ -110,7 +110,7 @@ runs:
     - name: Run Claude Code
       id: claude-code
       if: steps.prepare.outputs.contains_trigger == 'true'
-              uses: dnakov/claude-code-base-action@8d5f53ef1aaaabc6af13cf47681246a1f124460f # Modified version without validation
+      uses: dnakov/claude-code-base-action@8d5f53ef1aaaabc6af13cf47681246a1f124460f # Modified version without validation
       with:
         prompt_file: ${{ runner.temp }}/claude-prompts/claude-prompt.txt
         allowed_tools: ${{ env.ALLOWED_TOOLS }}
